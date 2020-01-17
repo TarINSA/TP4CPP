@@ -20,7 +20,10 @@
 
 //------------------------------------------------------------------------
 // Rôle de la classe <PageInfo>
-//
+// PageInfo est un objet associé à une Page internet.
+// cette classe permet de stocker les pages pointées par cette Page internet, associé au
+// nombre de fois où elles sont pointées, et également le nombre total de fois
+// où la Page internet est pointée (nbHit).
 //
 //------------------------------------------------------------------------
 

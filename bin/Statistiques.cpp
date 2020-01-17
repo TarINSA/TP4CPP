@@ -28,6 +28,13 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 
+void Statistiques::AjouterPage ( string pageSource, string pageCible)
+// Algorithme :
+//
+{
+  
+} //----- Fin de AjouterPage
+
 
 //------------------------------------------------- Surcharge d'opérateurs
 

@@ -36,6 +36,12 @@ public:
     // Contrat :
     //
 
+    void AjouterPage ( string pageSource, string pageCible);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 
 //------------------------------------------------- Surcharge d'opérateurs
 
@@ -65,7 +71,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-  map <string,PageInfo> ;
+  map <string,PageInfo> EnsemblePages;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Statistiques>
