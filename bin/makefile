@@ -2,8 +2,8 @@ CC=g++
 CFLAGS=-g -Wall -Werror -ansi -pedantic -std=c++11
 DFLAGS=
 
-MAIN=exec
-SRCS= PageInfo.cpp main.cpp Requete.cpp
+MAIN=analog
+SRCS= PageInfo.cpp Lecture.cpp Statistiques.cpp Requete.cpp main.cpp
 OBJS=$(SRCS:.c=.o)
 
 $(MAIN): $(OBJS)

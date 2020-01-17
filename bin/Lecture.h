@@ -1,31 +1,28 @@
 /*************************************************************************
-                           Statistiques  -  description
+                           Lecture  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <Statistiques> (fichier Statistiques.h) ----------------
-#if ! defined ( STATISTIQUES_H )
-#define STATISTIQUES_H
+//---------- Interface de la classe <Lecture> (fichier Lecture.h) ----------------
+#if ! defined ( LECTURE_H )
+#define LECTURE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <iterator>
-#include <map>
-#include "PageInfo.h"
-
+  #include <fstream>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Statistiques>
+// Rôle de la classe <Lecture>
 //
 //
 //------------------------------------------------------------------------
 
-class Statistiques
+class Lecture
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -37,30 +34,30 @@ public:
     // Contrat :
     //
 
-    void AjouterPage ( string pageSource, string pageCible);
+    bool TestExistanceFichier(string fichier);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-
 //------------------------------------------------- Surcharge d'opérateurs
 
 
+
 //-------------------------------------------- Constructeurs - destructeur
-    Statistiques ( const Statistiques & unStatistiques );
+    Lecture ( const Lecture & unLecture );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    Statistiques ( );
+    Lecture (bool e, bool t, int h, string nomFichier);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~Statistiques ( );
+    virtual ~Lecture ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -70,11 +67,14 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+bool filtre_e;
+bool filtre_t;
+int heure;
+ifstream fichierLog;
 //----------------------------------------------------- Attributs protégés
-  map <string,PageInfo> EnsemblePages;
+
 };
 
-//-------------------------------- Autres définitions dépendantes de <Statistiques>
+//-------------------------------- Autres définitions dépendantes de <Lecture>
 
-#endif // Statistiques_H
+#endif // Lecture_H

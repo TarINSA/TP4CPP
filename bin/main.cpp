@@ -20,6 +20,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "PageInfo.h"
+#include "Lecture.h"
 
 //----------------------------------------------------------------- PUBLIC
 bool filtre_e=false;
@@ -33,23 +34,28 @@ string nomFichier;
 string nomImage;
 // -----------------------------------------------Déclaration de Fonctions
 void choixOption(int argc,char ** argv);
-
-
+bool TestExistanceFichier(string nom);
 inline void ErreurSyntaxe();
-
-
 inline void ErreurFichier();
+
+
 
 //---------------------------------------------------- Fonctions publiques
 
 int main(int argc, char **argv)
 {
   choixOption(argc,argv);
+  if(!file_error && !syntax_error)
+  {
+      Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
+  }
   return 0;
 }
 
 
 void choixOption(int argc,char ** argv)
+// Algorithme :
+//
 {
   int i=1;
   while (i < argc && syntax_error==false && file_error==false)
@@ -58,13 +64,15 @@ void choixOption(int argc,char ** argv)
     {
       if (argv[i][strlen(argv[i])-4]=='.' && argv[i][strlen(argv[i])-3]=='l' && argv[i][strlen(argv[i])-2]=='o' && argv[i][strlen(argv[i])-1]=='g')
       {
-        if(1)//à modifier: tester l'ouverture du fichier
+        if(TestExistanceFichier((string)argv[i]))
         {
           fichier=true;
           nomFichier=(string)argv[i];
         }
         else
+        {
           file_error=true;
+        }
       }
       else
         syntax_error=true;
@@ -113,8 +121,24 @@ void choixOption(int argc,char ** argv)
 
   else if(file_error)
     ErreurFichier();
+} // Fin de choixOption
 
-}
+bool TestExistanceFichier(string nomFichier)
+// Algorithme :
+//
+{
+  fstream fichier(nomFichier,ios::in);
+  if(fichier.fail())
+  {
+    fichier.close();
+    return false;
+  }
+  else
+  {
+    fichier.close();
+    return true;
+  }
+} //----- Fin de TestExistanceFichier
 
 inline void ErreurSyntaxe()
 {
