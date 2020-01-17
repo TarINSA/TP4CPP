@@ -27,19 +27,59 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 
-
-//------------------------------------------------- Surcharge d'opérateurs
-Requete & Requete::operator = ( const Requete & unRequete )
+string Requete::GetDate()
 // Algorithme :
 //
 {
+	return date;
+} //----- Fin de GetDate
+
+string Requete::GetAction()
+// Algorithme :
+//
+{
+	return action;
+} //----- Fin de GetAction
+
+string Requete::GetPageCible()
+// Algorithme :
+//
+{
+	return pageCible;
+} //----- Fin de GetPageCible
+
+string Requete::GetPageSource()
+// Algorithme :
+//
+{
+	return pageSource;
+} //----- Fin de GetPageSource
+
+
+//------------------------------------------------- Surcharge d'opérateurs
+Requete & Requete::operator = ( const Requete & uneRequete )
+// Algorithme :
+//
+{
+	ip = uneRequete.ip;
+	userLogName = uneRequete.userLogName;
+	authenticatedUser = uneRequete.authenticatedUser;
+	date = uneRequete.date;
+	action = uneRequete.action;
+	pageCible = uneRequete.pageCible;
+	protocole = uneRequete.protocole;
+	codeRetour = uneRequete.codeRetour;
+	quantiteDonnees = uneRequete.quantiteDonnees;
+	pageSource = uneRequete.pageSource;
+	navigateur = uneRequete.navigateur;
 } //----- Fin de operator =
 
 
 //-------------------------------------------- Constructeurs - destructeur
-Requete::Requete ( const Requete & unRequete )
+Requete::Requete ( const Requete & uneRequete )
 // Algorithme :
 //
+: ip(uneRequete.ip), userLogName(uneRequete.userLogName), authenticatedUser(uneRequete.authenticatedUser), date(uneRequete.date), action(uneRequete.action), pageCible(uneRequete.pageCible), protocole(uneRequete.protocole), codeRetour(uneRequete.codeRetour), quantiteDonnees(uneRequete.quantiteDonnees), pageSource(uneRequete.pageSource), navigateur(uneRequete.navigateur)
 {
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Requete>" << endl;

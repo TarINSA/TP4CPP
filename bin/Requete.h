@@ -33,6 +33,30 @@ public:
     // Contrat :
     //
 
+    string GetDate();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    string GetAction();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    string GetPageCible();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+     string GetPageSource();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 
 //------------------------------------------------- Surcharge d'opérateurs
     Requete & operator = ( const Requete & uneRequete );
