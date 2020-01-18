@@ -1,8 +1,8 @@
 /*************************************************************************
-                           Requete  -  description
+                           Requete  -  Classe stockant les informations liées à une requête lue dans les logs
                              -------------------
     début                : 14/01/2020
-    copyright            : (C) 2020 par Killian OECHSLIN, Corentin BRANCHEREAU
+    copyright            : (C) 2020 par OECHSLIN, BRANCHEREAU
 *************************************************************************/
 
 //---------- Interface de la classe <Requete> (fichier Requete.h) ----------------

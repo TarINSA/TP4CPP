@@ -29,9 +29,10 @@ bool filtre_t=false;
 bool syntax_error=false;
 bool file_error=false;
 bool fichier=false;
+bool time_error=false;
 int temps;
 string nomFichier;
-string nomImage;
+string nomGraphe;
 // -----------------------------------------------Déclaration de Fonctions
 void choixOption(int argc,char ** argv);
 bool TestExistanceFichier(string nom);
@@ -45,7 +46,7 @@ inline void ErreurFichier();
 int main(int argc, char **argv)
 {
   choixOption(argc,argv);
-  if(!file_error && !syntax_error)
+  if(!file_error && !syntax_error && !time_error)
   {
       Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
   }
@@ -58,11 +59,11 @@ void choixOption(int argc,char ** argv)
 //
 {
   int i=1;
-  while (i < argc && syntax_error==false && file_error==false)
+  while (i < argc && syntax_error==false && file_error==false && time_error==false)
   {
-    if( i==argc-1 )
+    if( i==argc-1 ) // dernier argument passé lors de l'appel
     {
-      if (argv[i][strlen(argv[i])-4]=='.' && argv[i][strlen(argv[i])-3]=='l' && argv[i][strlen(argv[i])-2]=='o' && argv[i][strlen(argv[i])-1]=='g')
+      if (strlen(argv[i])>=5 && argv[i][strlen(argv[i])-4]=='.' && argv[i][strlen(argv[i])-3]=='l' && argv[i][strlen(argv[i])-2]=='o' && argv[i][strlen(argv[i])-1]=='g')
       {
         if(TestExistanceFichier((string)argv[i]))
         {
@@ -75,16 +76,18 @@ void choixOption(int argc,char ** argv)
         }
       }
       else
+      {
         syntax_error=true;
+      }
     }
 
     else if( !filtre_g && strcmp( argv[i],"-g" )==0 )
     {
-      if (i!=argc-2 && argv[i+1][strlen(argv[i+1])-4]=='.' && argv[i+1][strlen(argv[i+1])-3]=='d' && argv[i+1][strlen(argv[i+1])-2]=='o' && argv[i+1][strlen(argv[i+1])-1]=='t')
+      if (i!=argc-2 && strlen(argv[i+1])>=5 && argv[i+1][strlen(argv[i+1])-4]=='.' && argv[i+1][strlen(argv[i+1])-3]=='d' && argv[i+1][strlen(argv[i+1])-2]=='o' && argv[i+1][strlen(argv[i+1])-1]=='t')
       {
         filtre_g=true;
         i++;
-        nomImage= (string) argv[i];
+        nomGraphe=(string)argv[i];
       }
       else
       {
@@ -99,11 +102,33 @@ void choixOption(int argc,char ** argv)
 
     else if( !filtre_t && strcmp( argv[i],"-t" )==0 )
     {
-      if( i!=argc-2 && strlen(argv[i+1])==1 && (int)(argv[i+1][0]-48)>=0 && (int)(argv[i+1][0]-48)<24)
+      if( i!=argc-2)
       {
-        filtre_t=true;
-        i++;
-        temps=(int)argv[i][0]-48;
+
+        if(strlen(argv[i+1])==1 && argv[i+1][0]<='9' && argv[i+1][0]>='0')
+        {
+          temps = argv[i+1][0]-'0';
+          i++;
+          filtre_t=true;
+        }
+        else if(strlen(argv[i+1])==2 && argv[i+1][0]<='9' && argv[i+1][0]>='0' && argv[i+1][1]<='9' && argv[i+1][1]>='0')
+        {
+          temps = ( 10*(argv[i+1][0]-'0') ) + ( argv[i+1][1]-'0' );
+          if(temps<=23)
+          {
+            i++;
+            filtre_t=true;
+          }
+          else
+          {
+            cerr<<"Erreur : L'heure doit être comprise entre 0 et 23"<<endl;
+            time_error=true;
+          }
+        }
+        else
+        {
+          syntax_error=true;
+        }
       }
       else
       {
@@ -142,10 +167,11 @@ bool TestExistanceFichier(string nomFichier)
 
 inline void ErreurSyntaxe()
 {
-  cerr << "Erreur: veuillez respecter la syntaxe décrite dans la documentation"<<endl;
+  cerr << "Erreur de syntaxe :"<<endl<<"\tanalog [options] nomfichier.log"<<endl;
+  cerr<<"Options possibles :"<<endl<<"\t[-g nomfichier.dot]"<<endl<<"\t[-e]"<<endl<<"\t[-t heure]"<<endl;
 }
 
 inline void ErreurFichier()
 {
-  cerr << "Erreur: Problème sur l'ouverture du fichier. Vérifiez que celui-ci existe, ou que vous disposez des droits nécessaires"<<endl;
+  cerr << "Erreur: Problème sur l'ouverture du fichier. Vérifiez que celui-ci existe, et que vous disposez des droits nécessaires"<<endl;
 }
