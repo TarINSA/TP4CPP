@@ -86,6 +86,15 @@ Requete::Requete ( const Requete & uneRequete )
 #endif
 } //----- Fin de Requete (constructeur de copie)
 
+Requete::Requete ( )
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au constructeur par défaut de <Requete>" << endl;
+#endif
+} //----- Fin de Requete (constructeur par défaut)
+
 Requete::Requete (string ipr, string logname, string user, string d, string actionR, string cible, string prtcl, int codeR, int qDonne, string source,string nav)
 // Algorithme
 //
@@ -110,4 +119,3 @@ Requete::~Requete ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-

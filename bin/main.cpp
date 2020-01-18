@@ -46,20 +46,21 @@ inline void ErreurFichier();
 
 int main(int argc, char **argv)
 {
-  /*
+
   choixOption(argc,argv);
   if(!file_error && !syntax_error && !time_error)
   {
       Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
   }
-  */
 
 
+  /*
   // TEST
   Statistiques stat;
   stat.AjouterLien("source","cible");
   stat.AjouterLien("cible","source");
   stat.ConstruireGraphe("graphe.dot");
+  */
 
   return 0;
 

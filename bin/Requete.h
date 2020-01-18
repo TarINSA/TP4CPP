@@ -6,11 +6,14 @@
 *************************************************************************/
 
 //---------- Interface de la classe <Requete> (fichier Requete.h) ----------------
-#if ! defined ( REQUETE_H )
+#if ! defined (REQUETE_H)
 #define REQUETE_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include <fstream>
+#include <sstream>
+using namespace std;
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -21,7 +24,7 @@
 //
 //------------------------------------------------------------------------
 
-class Requete 
+class Requete
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -65,6 +68,11 @@ public:
     // Contrat :
     //
 
+    friend ifstream & operator >> (ifstream & in, Requete & r);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
 //-------------------------------------------- Constructeurs - destructeur
     Requete ( const Requete & uneRequete );
@@ -78,13 +86,13 @@ public:
     //
     // Contrat :
     //
-    
+
     Requete (string ipR, string logname, string user, string d, string actionR, string cible, string prtcl, int codeR, int qDonne, string source,string nav);
     // Mode d'emploi :
     //
     // Contrat :
     //
-    
+
     virtual ~Requete ( );
     // Mode d'emploi :
     //
@@ -112,5 +120,50 @@ protected:
 
 //-------------------------------- Autres définitions dépendantes de <Requete>
 
-#endif // REQUETE_H
+inline ifstream & operator >> (ifstream & in, Requete & r)
+{
+  string ligneReq;
 
+  getline(in,ligneReq,' '); // on récupère toute la ligne puis on extrait chaque élément par la suite
+  r.ip=ligneReq;
+
+  getline(in,ligneReq,' ');
+  r.userLogName=ligneReq;
+
+  getline(in,ligneReq,' ');
+  r.authenticatedUser=ligneReq;
+
+  getline(in,ligneReq,']');
+  ligneReq+=']';
+  r.date=ligneReq;
+
+  in.get(); // enlève l'espace
+  in.get(); // enlève le "
+  getline(in,ligneReq,' ');
+  r.action=ligneReq;
+
+  getline(in,ligneReq,' ');
+  r.pageCible=ligneReq;
+
+  getline(in,ligneReq,'\"');
+  r.protocole=ligneReq;
+
+  in.get(); // enlève l'espace
+  getline(in,ligneReq,' ');
+  istringstream(ligneReq)>>r.codeRetour; // convertit le string en int
+
+  getline(in,ligneReq,' ');
+  istringstream(ligneReq)>>r.quantiteDonnees;
+
+  in.get(); // enlève le "
+  getline(in,ligneReq,'\"');
+  r.pageSource=ligneReq;
+
+  in.get(); // enlève l'espace
+  getline(in,ligneReq,'\n');
+  r.navigateur=ligneReq;
+
+  return in;
+}
+
+#endif // REQUETE_H
