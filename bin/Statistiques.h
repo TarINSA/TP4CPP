@@ -37,11 +37,24 @@ public:
     // Contrat :
     //
 
-    void AjouterPage ( string pageSource, string pageCible);
+    void AjouterPage(string nomPage);
     // Mode d'emploi :
     //
     // Contrat :
     //
+
+    void AjouterLien(string pageSource, string pageCible);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    void ConstruireGraphe(string nomGraphe);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -72,7 +85,13 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-  map <string,PageInfo> EnsemblePages;
+    typedef struct
+    {
+        map <string,int> pagesPointees;
+        int nbHit;
+    } infoPage;
+    map <string,infoPage> EnsemblePages;
+
 };
 
 //-------------------------------- Autres définitions dépendantes de <Statistiques>

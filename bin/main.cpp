@@ -21,6 +21,7 @@ using namespace std;
 //------------------------------------------------------ Include personnel
 #include "PageInfo.h"
 #include "Lecture.h"
+#include "Statistiques.h"
 
 //----------------------------------------------------------------- PUBLIC
 bool filtre_e=false;
@@ -45,12 +46,23 @@ inline void ErreurFichier();
 
 int main(int argc, char **argv)
 {
+  /*
   choixOption(argc,argv);
   if(!file_error && !syntax_error && !time_error)
   {
       Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
   }
+  */
+
+
+  // TEST
+  Statistiques stat;
+  stat.AjouterLien("source","cible");
+  stat.AjouterLien("cible","source");
+  stat.ConstruireGraphe("graphe.dot");
+
   return 0;
+
 }
 
 
