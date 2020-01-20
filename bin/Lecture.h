@@ -12,6 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
   #include <fstream>
+  #include "Statistiques.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -35,6 +36,18 @@ public:
     //
 
     bool TestExistanceFichier(string fichier);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    void AnalyseLog();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    Statistiques & GetStatLog();
     // Mode d'emploi :
     //
     // Contrat :
@@ -71,6 +84,7 @@ bool filtre_e;
 bool filtre_t;
 int heure;
 ifstream fichierLog;
+Statistiques statLog;
 //----------------------------------------------------- Attributs protégés
 
 };

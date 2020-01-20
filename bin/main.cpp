@@ -51,6 +51,12 @@ int main(int argc, char **argv)
   if(!file_error && !syntax_error && !time_error)
   {
       Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
+      fichierLecture.AnalyseLog();
+      fichierLecture.GetStatLog().AfficherTopDix();
+      if(filtre_g)
+      {
+        fichierLecture.GetStatLog().ConstruireGraphe(nomGraphe);
+      }
   }
 
 

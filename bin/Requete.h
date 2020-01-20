@@ -156,7 +156,13 @@ inline ifstream & operator >> (ifstream & in, Requete & r)
   istringstream(ligneReq)>>r.quantiteDonnees;
 
   in.get(); // enlève le "
+  // opérations pour enlever la "base" de l'URL
+  getline(in,ligneReq,'/');
+  in.get();
+  getline(in,ligneReq,'/');
+  //maintenant on récupère la pageSource et on lui rajoute le / qui a été enlevé par les opérations précédentes
   getline(in,ligneReq,'\"');
+  ligneReq = "/"+ligneReq;
   r.pageSource=ligneReq;
 
   in.get(); // enlève l'espace

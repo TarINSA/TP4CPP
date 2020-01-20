@@ -55,6 +55,27 @@ public:
     // Contrat :
     //
 
+    void AfficherTopDix();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    //TEST
+    void printMap()
+    {
+      map<string,infoPage>::iterator it;
+    	for(it=EnsemblePages.begin();it!=EnsemblePages.end();++it)
+    	{
+    		cout<<" test source : "<<it->first<<endl;
+        map<string,int>::iterator itCible;
+        for(itCible=it->second.pagesPointees.begin();itCible!=it->second.pagesPointees.end();++itCible)
+        {
+          cout<<"\t test cible : "<<itCible->first<<endl;
+        }
+    	}
+    }
+
 
 
 //------------------------------------------------- Surcharge d'opérateurs

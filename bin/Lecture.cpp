@@ -17,6 +17,8 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Lecture.h"
+#include "Statistiques.h"
+#include "Requete.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -47,6 +49,26 @@ bool Lecture::TestExistanceFichier(string nomFichier)
   }
 } //----- Fin de TestExistanceFichier
 
+void Lecture::AnalyseLog()
+// Algorithme :
+//
+{
+  Requete reqTemp;
+  fichierLog>>reqTemp;
+  while(!fichierLog.eof()) // on lit jusqu'à la fin du fichier
+  {
+    statLog.AjouterLien(reqTemp.GetPageSource(),reqTemp.GetPageCible());
+    fichierLog>>reqTemp;
+  }
+} //----- Fin de AnalyseLog
+
+Statistiques & Lecture::GetStatLog()
+// Algorithme :
+//
+{
+  return statLog;
+} //----- Fin de GetStatLog()
+
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -60,7 +82,7 @@ Lecture::Lecture ( const Lecture & unLecture )
 } //----- Fin de Lecture (constructeur de copie)
 
 
-Lecture::Lecture (bool e,bool t,int h,string nom):filtre_e(e),filtre_t(t),heure(h), fichierLog(nom)
+Lecture::Lecture (bool e,bool t,int h,string nom):filtre_e(e),filtre_t(t),heure(h), fichierLog(nom),statLog()
 // Algorithme :
 //
 {

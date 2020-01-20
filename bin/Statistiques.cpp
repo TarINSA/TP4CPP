@@ -13,6 +13,7 @@
 //-------------------------------------------------------- Include système
 #include <iostream>
 #include <fstream>
+#include <set>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -110,7 +111,35 @@ void Statistiques::ConstruireGraphe(string nomGraphe)
 
 	fichierGraphe<<"}";
 	fichierGraphe.close();
+	cout<<"Dot-file "<<nomGraphe<<" generated"<<endl;
 } //----- Fin de ConstruireGraphe
+
+void Statistiques::AfficherTopDix()
+// Algorithme :
+//
+{
+	map<string,infoPage>::iterator iter;
+	set<string> pageDejaAffichee;
+	int i;
+	int maxHit;
+	string pageMaxTemp;
+	for(i=0;i<min(10,(int)EnsemblePages.size());++i)
+	{
+		maxHit=-1;
+		// recherche du nbHit max
+		for(iter=EnsemblePages.begin();iter!=EnsemblePages.end();++iter)
+		{
+			if(maxHit==-1 || (iter->second.nbHit > maxHit && pageDejaAffichee.find(iter->first) == pageDejaAffichee.end()))
+			{
+				pageMaxTemp=iter->first;
+				maxHit=iter->second.nbHit;
+			}
+		}
+
+		cout<<pageMaxTemp<<" ("<<maxHit<<" hits)"<<endl;
+		pageDejaAffichee.insert(pageMaxTemp);
+	}
+} //----- Fin de AfficherTopDix
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -132,9 +161,9 @@ Statistiques::Statistiques ( )
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <Statistiques>" << endl;
+    cout << "Appel au constructeur par défaut de <Statistiques>" << endl;
 #endif
-} //----- Fin de Statistiques
+} //----- Fin de Statistiques (constructeur par défaut)
 
 
 Statistiques::~Statistiques ( )
