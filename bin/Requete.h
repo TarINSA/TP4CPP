@@ -60,6 +60,11 @@ public:
     // Contrat :
     //
 
+    int ExtraireHeure();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
 //------------------------------------------------- Surcharge d'opérateurs
     Requete & operator = ( const Requete & uneRequete );
@@ -164,6 +169,9 @@ inline ifstream & operator >> (ifstream & in, Requete & r)
   getline(in,ligneReq,'\"');
   ligneReq = "/"+ligneReq;
   r.pageSource=ligneReq;
+
+  // ex page source bizarre :
+  // http://www.google.com/gwt/x?hl=fr&u=http://intranet-if.insa-lyon.fr/temps/&client=ms-samsung&q=Intranet+if&sa=X&ei=ayRLUNqhE7GM0wW-q4HgDw&ved=0CB4QFjAA
 
   in.get(); // enlève l'espace
   getline(in,ligneReq,'\n');

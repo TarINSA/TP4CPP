@@ -11,6 +11,8 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
+#include <sstream>
+#include <string>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -54,6 +56,23 @@ string Requete::GetPageSource()
 {
 	return pageSource;
 } //----- Fin de GetPageSource
+
+int Requete::ExtraireHeure()
+// Algorithme :
+//
+{
+	//extraction de l'heure en string
+	istringstream streamDate(date);
+	string temp;
+	getline(streamDate,temp,':');
+	getline(streamDate,temp,':');
+
+	//transformation en int :
+	stringstream convert(temp);
+	int res;
+	convert>>res;
+	return res;
+} //----- Fin de ExtraireHeure
 
 
 //------------------------------------------------- Surcharge d'opérateurs

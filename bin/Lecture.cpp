@@ -54,10 +54,44 @@ void Lecture::AnalyseLog()
 //
 {
   Requete reqTemp;
+  bool filtreEOk=false;
+  bool filtreTOk=false;
   fichierLog>>reqTemp;
   while(!fichierLog.eof()) // on lit jusqu'à la fin du fichier
   {
-    statLog.AjouterLien(reqTemp.GetPageSource(),reqTemp.GetPageCible());
+    filtreTOk=false;
+    filtreEOk=false;
+    if(filtre_e)
+    {
+      string pageCibleReq = reqTemp.GetPageCible();
+
+      if(pageCibleReq.length()>5 && pageCibleReq.substr(pageCibleReq.length()-5,5)==".html")
+      {
+        filtreEOk=true;
+      }
+    }
+    else
+    {
+      filtreEOk=true;
+    }
+
+    if(filtre_t)
+    {
+      int heureReq = reqTemp.ExtraireHeure();
+      if(heureReq>=heure && heureReq<heure+1)
+      {
+        filtreTOk=true;
+      }
+    }
+    else
+    {
+      filtreTOk=true;
+    }
+
+    if(filtreTOk && filtreEOk)
+    {
+      statLog.AjouterLien(reqTemp.GetPageSource(),reqTemp.GetPageCible());
+    }
     fichierLog>>reqTemp;
   }
 } //----- Fin de AnalyseLog

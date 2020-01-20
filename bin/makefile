@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-g -Wall -Werror -ansi -pedantic -std=c++11
-DFLAGS= -DMAP
+DFLAGS=
 
 MAIN=analog
 SRCS= Lecture.cpp Statistiques.cpp Requete.cpp main.cpp
