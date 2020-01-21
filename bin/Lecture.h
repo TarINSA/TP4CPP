@@ -59,7 +59,18 @@ public:
     // Contrat :
     //
 
-    bool passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure);
+    bool PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    bool VerifieFichierExclu(string nomPage);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
 //------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur

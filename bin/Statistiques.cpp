@@ -93,6 +93,10 @@ void Statistiques::ConstruireGraphe(string nomGraphe)
 	// création de tous les nodes
 	for(it=EnsemblePages.begin();it!=EnsemblePages.end();++it)
 	{
+		if(it->first=="-") // on ne prend pas en compte les referers "-"
+		{
+			continue;
+		}
 		string nameNode = "node"+to_string(nbNode);
 		fichierGraphe<<nameNode<<" [label=\""<<it->first<<"\"];"<<endl;
 		++nbNode;
@@ -102,6 +106,10 @@ void Statistiques::ConstruireGraphe(string nomGraphe)
 	// création des liens
 	for(it=EnsemblePages.begin();it!=EnsemblePages.end();++it)
 	{
+		if(it->first=="-") // on ne prend pas en compte les referers "-"
+		{
+			continue;
+		}
 		map<string,int>::iterator itLien;
 		for(itLien=it->second.pagesPointees.begin();itLien!=it->second.pagesPointees.end();++itLien)
 		{

@@ -55,7 +55,11 @@ int main(int argc, char **argv)
   if(!file_error && !syntax_error && !time_error)
   {
       // lecture du fichier config pour obtenir la base de l'url (adresse local)
-      ifstream fichierConfig("config.txt");
+      // on récupère d'abord le chemin d'accès du fichier config
+      string cheminConfig=string(argv[0]);
+      cheminConfig.erase(cheminConfig.find("analog"));
+      cheminConfig+="config.txt";
+      ifstream fichierConfig(cheminConfig);
       if(!fichierConfig.is_open())
       {
         cerr<<"Erreur lors de l'ouverture du fichier config.txt. Vérifiez que ce fichier existe et que vous disposez des droits d'accès nécessaires"<<endl;
@@ -74,7 +78,7 @@ int main(int argc, char **argv)
       while(fichierLecture.LireLigneLog(requeteTemporaire))
       {
         requeteTemporaire.EnleverBaseUrlSource(baseUrl);
-        if(fichierLecture.passageFiltre(requeteTemporaire,filtre_e,filtre_t,temps))
+        if(fichierLecture.PassageFiltre(requeteTemporaire,filtre_e,filtre_t,temps))
         {
           statLog.AjouterLien(requeteTemporaire.GetPageSource(),requeteTemporaire.GetPageCible());
         }

@@ -13,6 +13,7 @@
 //-------------------------------------------------------- Include système
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -120,7 +121,7 @@ bool Lecture::LireLigneLog(Requete & reqTemp)
   return true;
 } //----- Fin de LireLigneLog()
 
-bool Lecture::passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure)
+bool Lecture::PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure)
 // Algorithme :
 //
 {
@@ -128,7 +129,11 @@ bool Lecture::passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heu
   bool filtre_e_ok=false;
   if(filtre_e)
   {
-    if(req.GetPageCible().length()>5 && req.GetPageCible().substr(req.GetPageCible().length()-5,5)==".html")
+    if(VerifieFichierExclu(req.GetPageCible()))
+    {
+      filtre_e_ok=false;
+    }
+    else
     {
       filtre_e_ok=true;
     }
@@ -159,6 +164,44 @@ bool Lecture::passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heu
     return false;
   }
 } //----- Fin de LireLigneLog()
+
+bool Lecture::VerifieFichierExclu(string nomPage)
+// Algorithme :
+//
+{
+  // on convertie en minuscule pour ne pas avoir de problème de casse
+  transform(nomPage.begin(), nomPage.end(), nomPage.begin(),::tolower);
+
+  if(nomPage.length()>3 && nomPage.substr(nomPage.length()-3,3)==".js")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".jpg")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".ico")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".gif")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".png")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".bmp")
+  {
+    return true;
+  }
+  if(nomPage.length()>4 && nomPage.substr(nomPage.length()-4,4)==".css")
+  {
+    return true;
+  }
+  return false;
+} //----- Fin de VerifieFichierExclu()
 
 //------------------------------------------------- Surcharge d'opérateurs
 
