@@ -15,6 +15,7 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -34,11 +35,13 @@ bool time_error=false;
 int temps;
 string nomFichier;
 string nomGraphe;
+string baseUrl;
 // -----------------------------------------------Déclaration de Fonctions
 void choixOption(int argc,char ** argv);
 bool TestExistanceFichier(string nom);
 inline void ErreurSyntaxe();
 inline void ErreurFichier();
+inline void ErreurTemps();
 
 
 
@@ -50,7 +53,21 @@ int main(int argc, char **argv)
   choixOption(argc,argv);
   if(!file_error && !syntax_error && !time_error)
   {
-      Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier);
+      // lecture du fichier config pour obtenir la base de l'url (adresse local)
+      ifstream fichierConfig("config.txt");
+      if(!fichierConfig.is_open())
+      {
+        cerr<<"Erreur lors de l'ouverture du fichier config.txt. Vérifiez que ce fichier existe et que vous disposez des droits d'accès nécessaires"<<endl;
+        fichierConfig.close();
+        return -1;
+      }
+      else
+      {
+        fichierConfig>>baseUrl;
+        fichierConfig.close();
+      }
+
+      Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier,baseUrl);
       fichierLecture.AnalyseLog();
       if(filtre_g)
       {
@@ -91,12 +108,14 @@ void choixOption(int argc,char ** argv)
         }
         else
         {
-          file_error=true;
+          ErreurFichier();
+          return;
         }
       }
       else
       {
-        syntax_error=true;
+        ErreurSyntaxe();
+        return;
       }
     }
 
@@ -110,7 +129,8 @@ void choixOption(int argc,char ** argv)
       }
       else
       {
-        syntax_error=true;
+        ErreurSyntaxe();
+        return;
       }
     }
 
@@ -140,31 +160,31 @@ void choixOption(int argc,char ** argv)
           }
           else
           {
-            cerr<<"Erreur : L'heure doit être comprise entre 0 et 23"<<endl;
-            time_error=true;
+            ErreurTemps();
+            return;
           }
         }
         else
         {
-          syntax_error=true;
+          ErreurSyntaxe();
+          return;
         }
       }
       else
       {
-        syntax_error=true;
+        ErreurSyntaxe();
+        return;
       }
     }
     else
     {
-      syntax_error=true;
+      ErreurSyntaxe();
+      return;
     }
     i++;
   }
-  if(syntax_error || argc==1)
+  if(argc==1)
     ErreurSyntaxe();
-
-  else if(file_error)
-    ErreurFichier();
 } // Fin de choixOption
 
 bool TestExistanceFichier(string nomFichier)
@@ -188,9 +208,17 @@ inline void ErreurSyntaxe()
 {
   cerr << "Erreur de syntaxe :"<<endl<<"\tanalog [options] nomfichier.log"<<endl;
   cerr<<"Options possibles :"<<endl<<"\t[-g nomfichier.dot]"<<endl<<"\t[-e]"<<endl<<"\t[-t heure]"<<endl;
+  syntax_error=true;
 }
 
 inline void ErreurFichier()
 {
-  cerr << "Erreur: Problème sur l'ouverture du fichier. Vérifiez que celui-ci existe, et que vous disposez des droits nécessaires"<<endl;
+  cerr << "Erreur: Problème sur l'ouverture du fichier .log. Vérifiez que celui-ci existe, et que vous disposez des droits nécessaires"<<endl;
+  file_error=true;
+}
+
+inline void ErreurTemps()
+{
+  cerr<<"Erreur : L'heure doit être comprise entre 0 et 23"<<endl;
+  time_error=true;
 }
