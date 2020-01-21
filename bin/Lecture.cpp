@@ -116,7 +116,7 @@ Lecture::Lecture ( const Lecture & unLecture )
 } //----- Fin de Lecture (constructeur de copie)
 
 
-Lecture::Lecture (bool e,bool t,int h,string nom):filtre_e(e),filtre_t(t),heure(h), fichierLog(nom),statLog()
+Lecture::Lecture (bool e,bool t,int h,string nom,string bUrl):filtre_e(e),filtre_t(t),heure(h), fichierLog(nom),statLog(),baseUrl(bUrl)
 // Algorithme :
 //
 {

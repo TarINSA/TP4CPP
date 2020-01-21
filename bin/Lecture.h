@@ -64,7 +64,7 @@ public:
     // Contrat :
     //
 
-    Lecture (bool e, bool t, int h, string nomFichier);
+    Lecture (bool e, bool t, int h, string nomFichier,string bUrl);
     // Mode d'emploi :
     //
     // Contrat :
@@ -85,6 +85,7 @@ bool filtre_t;
 int heure;
 ifstream fichierLog;
 Statistiques statLog;
+string baseUrl;
 //----------------------------------------------------- Attributs protégés
 
 };
