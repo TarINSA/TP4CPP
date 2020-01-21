@@ -168,6 +168,14 @@ inline ifstream & operator >> (ifstream & in, Requete & r)
   //maintenant on récupère la pageSource et on lui rajoute le / qui a été enlevé par les opérations précédentes
   getline(in,ligneReq,'\"');
   ligneReq = "/"+ligneReq;
+  // gestion des recherches: on supprime ce qui apparait après les ?
+  for(int i=0;i<ligneReq.size();i++)
+  {
+    if(ligneReq[i]=='?')
+    {
+      ligneReq.erase(i);
+    }
+  }
   r.pageSource=ligneReq;
 
   // ex page source bizarre :
