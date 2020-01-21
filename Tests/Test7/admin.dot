@@ -1,0 +1,28 @@
+digraph {
+node0 [label="/SiteWebIF/Intranet-etudiant.php"];
+node1 [label="/favicon.ico"];
+node2 [label="/stages/Listestage.php"];
+node3 [label="/temps/"];
+node4 [label="/temps/3IF37.html"];
+node5 [label="/temps/3IF38.html"];
+node6 [label="/temps/3IF39.html"];
+node7 [label="/temps/FondInsa.jpg"];
+node8 [label="/temps/InsaIF.ico"];
+node9 [label="/temps/choix.gif"];
+node10 [label="/temps/precedent.gif"];
+node11 [label="/temps/style_emploi_du_temps.css"];
+node12 [label="/temps/suivant.gif"];
+node13 [label="http://if.insa-lyon.fr/"];
+node14 [label="http://www.google.fr/url"];
+node0 -> node2 [label="1"];
+node3 -> node4 [label="1"];
+node3 -> node11 [label="1"];
+node4 -> node5 [label="1"];
+node4 -> node9 [label="1"];
+node4 -> node10 [label="1"];
+node4 -> node12 [label="1"];
+node5 -> node6 [label="1"];
+node11 -> node7 [label="1"];
+node13 -> node0 [label="1"];
+node14 -> node3 [label="1"];
+}

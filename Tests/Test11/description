@@ -1,1 +1,1 @@
-Test sur la saisie de la commande: erreur si pas d'argument après l'option -t
+Test sur option -e: cas où aucun document n'est exclu

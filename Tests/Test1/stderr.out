@@ -1,0 +1,6 @@
+Erreur de syntaxe :
+	analog [options] nomfichier.log
+Options possibles :
+	[-g nomfichier.dot]
+	[-e]
+	[-t heure]

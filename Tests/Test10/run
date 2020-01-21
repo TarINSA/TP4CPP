@@ -1,2 +1,2 @@
-../../bin/analog ../nexistepas.log
+../../bin/analog -g fichier.dot ../log/1doc.log
 

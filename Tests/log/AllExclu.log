@@ -1,0 +1,6 @@
+192.168.0.14 - - [08/Sep/2012:11:33:40 +0200] "GET /favicon.ico HTTP/1.1" 200 1700 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.14 - - [08/Sep/2012:11:34:22 +0200] "GET /stages/style_pfe.css HTTP/1.1" 200 895 "http://intranet-if.insa-lyon.fr/SiteWebIF/Intranet-etudiant.php" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.14 - - [08/Sep/2012:11:34:23 +0200] "GET /stages/FondInsa.jpg HTTP/1.1" 200 2828 "http://intranet-if.insa-lyon.fr/SiteWebIF/Intranet-etudiant.php" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.14 - - [08/Sep/2012:11:34:23 +0200] "GET /stages/bandeauFinal.jpg HTTP/1.1" 200 50390 "http://intranet-if.insa-lyon.fr/SiteWebIF/Intranet-etudiant.php" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.14 - - [08/Sep/2012:11:34:23 +0200] "GET /stages/InsaIF.ico HTTP/1.1" 200 766 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+

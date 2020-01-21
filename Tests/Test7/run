@@ -1,1 +1,2 @@
-./exe
+../../bin/analog -g admin.dot ../log/15doc.log
+

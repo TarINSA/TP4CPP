@@ -49,7 +49,7 @@ public:
     // Contrat :
     //
 
-    void ConstruireGraphe(string nomGraphe);
+    bool ConstruireGraphe(string nomGraphe);
     // Mode d'emploi :
     //
     // Contrat :

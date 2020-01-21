@@ -1,2 +1,2 @@
-../../bin/analog -t ../anonyme.log
+../../bin/analog -e ../log/aucunExclu.log
 

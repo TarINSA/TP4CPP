@@ -72,7 +72,7 @@ void Statistiques::AjouterLien ( string pageSource, string pageCible)
 
 } //----- Fin de AjouterPagePointee
 
-void Statistiques::ConstruireGraphe(string nomGraphe)
+bool Statistiques::ConstruireGraphe(string nomGraphe)
 // Algorithme :
 //
 {
@@ -80,9 +80,8 @@ void Statistiques::ConstruireGraphe(string nomGraphe)
 	fichierGraphe.open(nomGraphe,ios::trunc);
 	if(!fichierGraphe.is_open())
 	{
-		cerr<<"Erreur lors de l'ouverture du fichier .dot. Vérifiez que vous disposez des droits nécessaires."<<endl;
 		fichierGraphe.close();
-		return;
+		return false;
 	}
 
 	fichierGraphe<<"digraph {"<<endl;
@@ -120,6 +119,7 @@ void Statistiques::ConstruireGraphe(string nomGraphe)
 	fichierGraphe<<"}";
 	fichierGraphe.close();
 	cout<<"Dot-file "<<nomGraphe<<" generated"<<endl;
+	return true;
 } //----- Fin de ConstruireGraphe
 
 void Statistiques::AfficherTopDix()
@@ -143,8 +143,10 @@ void Statistiques::AfficherTopDix()
 				maxHit=iter->second.nbHit;
 			}
 		}
-
-		cout<<pageMaxTemp<<" ("<<maxHit<<" hits)"<<endl;
+		if(maxHit>0)
+		{
+			cout<<pageMaxTemp<<" ("<<maxHit<<" hits)"<<endl;
+		}
 		pageDejaAffichee.insert(pageMaxTemp);
 	}
 } //----- Fin de AfficherTopDix

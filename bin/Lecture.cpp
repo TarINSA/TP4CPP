@@ -147,6 +147,10 @@ bool Lecture::PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heu
   {
     if(req.ExtraireHeure()>=heure && req.ExtraireHeure()<heure+1)
     {
+      filtre_t_ok=false;
+    }
+    else
+    {
       filtre_t_ok=true;
     }
   }

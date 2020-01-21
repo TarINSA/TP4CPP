@@ -1,0 +1,7 @@
+192.168.0.4 - - [08/Sep/2012:11:25:25 +0200] "GET /temps/3IF4.html HTTP/1.1" 200 18304 "http://intranet-if.insa-lyon.fr/temps/3IF3.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.4 - - [08/Sep/2012:11:25:37 +0200] "GET /temps/3IF5.html HTTP/1.1" 200 22176 "http://intranet-if.insa-lyon.fr/temps/3IF4.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.4 - - [08/Sep/2012:11:25:47 +0200] "GET /temps/3IF6.html HTTP/1.1" 200 22777 "http://intranet-if.insa-lyon.fr/temps/3IF5.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.4 - - [08/Sep/2012:11:25:58 +0200] "GET /temps/3IF7.html HTTP/1.1" 200 21809 "http://intranet-if.insa-lyon.fr/temps/3IF6.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.4 - - [08/Sep/2012:11:26:03 +0200] "GET /temps/3IF8.html HTTP/1.1" 200 21781 "http://intranet-if.insa-lyon.fr/temps/3IF7.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+192.168.0.4 - - [08/Sep/2012:11:26:08 +0200] "GET /temps/3IF9.html HTTP/1.1" 200 5196 "http://intranet-if.insa-lyon.fr/temps/3IF8.html" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
+

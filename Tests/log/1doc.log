@@ -1,0 +1,3 @@
+
+192.168.0.2 - - [08/Sep/2012:11:17:11 +0200] "GET /temps/3IF37.html HTTP/1.1" 200 17269 "http://intranet-if.insa-lyon.fr/temps/" "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1"
+

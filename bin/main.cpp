@@ -43,6 +43,7 @@ bool TestExistanceFichier(string nom);
 inline void ErreurSyntaxe();
 inline void ErreurFichier();
 inline void ErreurTemps();
+inline void ErreurImage();
 
 
 
@@ -84,11 +85,19 @@ int main(int argc, char **argv)
         }
       }
 
+      bool GraphConstruit=true;
       if(filtre_g)
       {
-        statLog.ConstruireGraphe(nomGraphe);
+         GraphConstruit=statLog.ConstruireGraphe(nomGraphe);
       }
-      statLog.AfficherTopDix();
+      if(GraphConstruit)
+      {
+        statLog.AfficherTopDix();
+      }
+      else
+      {
+        ErreurImage();
+      }
   }
 
 
@@ -236,4 +245,8 @@ inline void ErreurTemps()
 {
   cerr<<"Erreur : L'heure doit être comprise entre 0 et 23"<<endl;
   time_error=true;
+}
+inline void ErreurImage()
+{
+  cerr<<"Erreur lors de l'ouverture du fichier .dot. Vérifiez que vous disposez des droits nécessaires."<<endl;
 }

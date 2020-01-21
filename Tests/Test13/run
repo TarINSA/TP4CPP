@@ -1,2 +1,2 @@
-../../bin/analog -t 25 ../anonyme.log
+../../bin/analog -e ../log/15doc.log
 
