@@ -23,7 +23,6 @@ using namespace std;
 //
 //
 //------------------------------------------------------------------------
-
 class Requete
 {
 //----------------------------------------------------------------- PUBLIC
@@ -55,6 +54,12 @@ public:
     //
 
      string GetPageSource();
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    void EnleverBaseUrlSource(string baseUrl);
     // Mode d'emploi :
     //
     // Contrat :
@@ -148,6 +153,14 @@ inline ifstream & operator >> (ifstream & in, Requete & r)
   r.action=ligneReq;
 
   getline(in,ligneReq,' ');
+  for(int i=0;i<ligneReq.size();i++)
+  {
+    if(ligneReq[i]=='?')
+    {
+      ligneReq.erase(i);
+      break;
+    }
+  }
   r.pageCible=ligneReq;
 
   getline(in,ligneReq,'\"');
@@ -158,28 +171,29 @@ inline ifstream & operator >> (ifstream & in, Requete & r)
   istringstream(ligneReq)>>r.codeRetour; // convertit le string en int
 
   getline(in,ligneReq,' ');
-  istringstream(ligneReq)>>r.quantiteDonnees;
+  if(ligneReq=="-")
+  {
+    r.quantiteDonnees=0;
+  }
+  else
+  {
+    istringstream(ligneReq)>>r.quantiteDonnees;
+  }
 
   in.get(); // enlève le "
-  // opérations pour enlever la "base" de l'URL
-  getline(in,ligneReq,'/');
-  in.get();
-  getline(in,ligneReq,'/');
-  //maintenant on récupère la pageSource et on lui rajoute le / qui a été enlevé par les opérations précédentes
+  //on récupère la page source en entière (avec la base qu'on enlèvera plus tard si nécessaire)
   getline(in,ligneReq,'\"');
-  ligneReq = "/"+ligneReq;
+
   // gestion des recherches: on supprime ce qui apparait après les ?
   for(int i=0;i<ligneReq.size();i++)
   {
     if(ligneReq[i]=='?')
     {
       ligneReq.erase(i);
+      break;
     }
   }
   r.pageSource=ligneReq;
-
-  // ex page source bizarre :
-  // http://www.google.com/gwt/x?hl=fr&u=http://intranet-if.insa-lyon.fr/temps/&client=ms-samsung&q=Intranet+if&sa=X&ei=ayRLUNqhE7GM0wW-q4HgDw&ved=0CB4QFjAA
 
   in.get(); // enlève l'espace
   getline(in,ligneReq,'\n');

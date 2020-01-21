@@ -13,6 +13,7 @@
 //--------------------------------------------------- Interfaces utilisées
   #include <fstream>
   #include "Statistiques.h"
+  #include "Requete.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -22,7 +23,6 @@
 //
 //
 //------------------------------------------------------------------------
-
 class Lecture
 {
 //----------------------------------------------------------------- PUBLIC
@@ -47,15 +47,20 @@ public:
     // Contrat :
     //
 
+    bool LireLigneLog(Requete & reqTemp);
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
     Statistiques & GetStatLog();
     // Mode d'emploi :
     //
     // Contrat :
     //
 
+    bool passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure);
 //------------------------------------------------- Surcharge d'opérateurs
-
-
 
 //-------------------------------------------- Constructeurs - destructeur
     Lecture ( const Lecture & unLecture );
@@ -64,7 +69,7 @@ public:
     // Contrat :
     //
 
-    Lecture (bool e, bool t, int h, string nomFichier,string bUrl);
+    Lecture (string nomFichier);
     // Mode d'emploi :
     //
     // Contrat :
@@ -80,12 +85,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-bool filtre_e;
-bool filtre_t;
-int heure;
 ifstream fichierLog;
-Statistiques statLog;
-string baseUrl;
 //----------------------------------------------------- Attributs protégés
 
 };

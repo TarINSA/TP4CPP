@@ -74,6 +74,14 @@ int Requete::ExtraireHeure()
 	return res;
 } //----- Fin de ExtraireHeure
 
+void Requete::EnleverBaseUrlSource(string baseUrl)
+{
+  if(pageSource.find(baseUrl) != string::npos)
+  {
+    // si on trouve la base, on l'enlève
+    pageSource=pageSource.substr(pageSource.find(baseUrl)+baseUrl.length());
+  }
+}
 
 //------------------------------------------------- Surcharge d'opérateurs
 Requete & Requete::operator = ( const Requete & uneRequete )

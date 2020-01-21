@@ -49,6 +49,7 @@ bool Lecture::TestExistanceFichier(string nomFichier)
   }
 } //----- Fin de TestExistanceFichier
 
+/*
 void Lecture::AnalyseLog()
 // Algorithme :
 //
@@ -90,18 +91,74 @@ void Lecture::AnalyseLog()
 
     if(filtreTOk && filtreEOk)
     {
-      statLog.AjouterLien(reqTemp.GetPageSource(),reqTemp.GetPageCible());
+      statLog.AjouterLien(src,reqTemp.GetPageCible());
     }
     fichierLog>>reqTemp;
   }
 } //----- Fin de AnalyseLog
+*/
 
+/*
 Statistiques & Lecture::GetStatLog()
 // Algorithme :
 //
 {
   return statLog;
 } //----- Fin de GetStatLog()
+*/
+
+bool Lecture::LireLigneLog(Requete & reqTemp)
+// Algorithme :
+//
+{
+  fichierLog>>reqTemp;
+  if(fichierLog.eof())
+  {
+    return false;
+  }
+
+  return true;
+} //----- Fin de LireLigneLog()
+
+bool Lecture::passageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure)
+// Algorithme :
+//
+{
+  bool filtre_t_ok=false;
+  bool filtre_e_ok=false;
+  if(filtre_e)
+  {
+    if(req.GetPageCible().length()>5 && req.GetPageCible().substr(req.GetPageCible().length()-5,5)==".html")
+    {
+      filtre_e_ok=true;
+    }
+  }
+  else
+  {
+    filtre_e_ok=true;
+  }
+
+  if(filtre_t)
+  {
+    if(req.ExtraireHeure()>=heure && req.ExtraireHeure()<heure+1)
+    {
+      filtre_t_ok=true;
+    }
+  }
+  else
+  {
+    filtre_t_ok=true;
+  }
+
+  if(filtre_t_ok && filtre_e_ok)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+} //----- Fin de LireLigneLog()
 
 //------------------------------------------------- Surcharge d'opérateurs
 
@@ -116,7 +173,7 @@ Lecture::Lecture ( const Lecture & unLecture )
 } //----- Fin de Lecture (constructeur de copie)
 
 
-Lecture::Lecture (bool e,bool t,int h,string nom,string bUrl):filtre_e(e),filtre_t(t),heure(h), fichierLog(nom),statLog(),baseUrl(bUrl)
+Lecture::Lecture (string nomFichier):fichierLog(nomFichier)
 // Algorithme :
 //
 {

@@ -23,6 +23,7 @@ using namespace std;
 #include "PageInfo.h"
 #include "Lecture.h"
 #include "Statistiques.h"
+#include "Requete.h"
 
 //----------------------------------------------------------------- PUBLIC
 bool filtre_e=false;
@@ -67,13 +68,23 @@ int main(int argc, char **argv)
         fichierConfig.close();
       }
 
-      Lecture fichierLecture(filtre_e,filtre_t,temps,nomFichier,baseUrl);
-      fichierLecture.AnalyseLog();
+      Requete requeteTemporaire;
+      Statistiques statLog;
+      Lecture fichierLecture(nomFichier);
+      while(fichierLecture.LireLigneLog(requeteTemporaire))
+      {
+        requeteTemporaire.EnleverBaseUrlSource(baseUrl);
+        if(fichierLecture.passageFiltre(requeteTemporaire,filtre_e,filtre_t,temps))
+        {
+          statLog.AjouterLien(requeteTemporaire.GetPageSource(),requeteTemporaire.GetPageCible());
+        }
+      }
+
       if(filtre_g)
       {
-        fichierLecture.GetStatLog().ConstruireGraphe(nomGraphe);
+        statLog.ConstruireGraphe(nomGraphe);
       }
-      fichierLecture.GetStatLog().AfficherTopDix();
+      statLog.AfficherTopDix();
   }
 
 
