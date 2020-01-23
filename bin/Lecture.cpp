@@ -1,9 +1,8 @@
  /*************************************************************************
-                           Lecture  -  description
+                           Lecture  -  Classe de lecture du fichier log
                              -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
+    début                : 14/01/2020
+    copyright            : (C) 2020 par BRANCHEREAU, OECHSLIN
 *************************************************************************/
 
 //---------- Réalisation de la classe <Lecture> (fichier Lecture.cpp) ------------
@@ -14,27 +13,18 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-using namespace std;
 
+using namespace std;
 //------------------------------------------------------ Include personnel
 #include "Lecture.h"
-#include "Statistiques.h"
 #include "Requete.h"
-
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-// type Lecture::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
-
-bool Lecture::TestExistanceFichier(string nomFichier)
-// Algorithme :
+bool Lecture::TestOuvertureFichier(string nomFichier)
+// Algorithme : Aucun
 //
 {
   fstream fichier(nomFichier,ios::in);
@@ -48,81 +38,25 @@ bool Lecture::TestExistanceFichier(string nomFichier)
     fichier.close();
     return true;
   }
-} //----- Fin de TestExistanceFichier
-
-/*
-void Lecture::AnalyseLog()
-// Algorithme :
-//
-{
-  Requete reqTemp;
-  bool filtreEOk=false;
-  bool filtreTOk=false;
-  fichierLog>>reqTemp;
-  while(!fichierLog.eof()) // on lit jusqu'à la fin du fichier
-  {
-    filtreTOk=false;
-    filtreEOk=false;
-    if(filtre_e)
-    {
-      string pageCibleReq = reqTemp.GetPageCible();
-
-      if(pageCibleReq.length()>5 && pageCibleReq.substr(pageCibleReq.length()-5,5)==".html")
-      {
-        filtreEOk=true;
-      }
-    }
-    else
-    {
-      filtreEOk=true;
-    }
-
-    if(filtre_t)
-    {
-      int heureReq = reqTemp.ExtraireHeure();
-      if(heureReq>=heure && heureReq<heure+1)
-      {
-        filtreTOk=true;
-      }
-    }
-    else
-    {
-      filtreTOk=true;
-    }
-
-    if(filtreTOk && filtreEOk)
-    {
-      statLog.AjouterLien(src,reqTemp.GetPageCible());
-    }
-    fichierLog>>reqTemp;
-  }
-} //----- Fin de AnalyseLog
-*/
-
-/*
-Statistiques & Lecture::GetStatLog()
-// Algorithme :
-//
-{
-  return statLog;
-} //----- Fin de GetStatLog()
-*/
+} //----- Fin de TestOuvertureFichier
 
 bool Lecture::LireLigneLog(Requete & reqTemp)
-// Algorithme :
+// Algorithme : Cette méthode utilise la surcharge de l'opérateur >> afin de
+// remplir les informations de la requête passée en paramètre
 //
 {
   fichierLog>>reqTemp;
+  // on indique si on a atteint la fin du fichier
   if(fichierLog.eof())
   {
     return false;
   }
 
   return true;
-} //----- Fin de LireLigneLog()
+} //----- Fin de LireLigneLog
 
 bool Lecture::PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heure)
-// Algorithme :
+// Algorithme : Aucun
 //
 {
   bool filtre_t_ok=false;
@@ -147,11 +81,11 @@ bool Lecture::PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heu
   {
     if(req.ExtraireHeure()>=heure && req.ExtraireHeure()<heure+1)
     {
-      filtre_t_ok=false;
+      filtre_t_ok=true;
     }
     else
     {
-      filtre_t_ok=true;
+      filtre_t_ok=false;
     }
   }
   else
@@ -167,13 +101,42 @@ bool Lecture::PassageFiltre(Requete & req, bool filtre_e, bool filtre_t, int heu
   {
     return false;
   }
-} //----- Fin de LireLigneLog()
+} //----- Fin de PassageFiltre
 
-bool Lecture::VerifieFichierExclu(string nomPage)
-// Algorithme :
+//------------------------------------------------- Surcharge d'opérateurs
+
+//-------------------------------------------- Constructeurs - destructeur
+Lecture::Lecture (string nomFichier)
+// Algorithme : Aucun
+//
+:fichierLog(nomFichier)
+{
+  #ifdef MAP
+      cout << "Appel au constructeur de <Lecture>" << endl;
+  #endif
+} //----- Fin de Lecture
+
+Lecture::~Lecture ( )
+// Algorithme : Aucun
 //
 {
-  // on convertie en minuscule pour ne pas avoir de problème de casse
+  fichierLog.close();
+#ifdef MAP
+    cout << "Appel au destructeur de <Lecture>" << endl;
+#endif
+} //----- Fin de ~Lecture
+
+
+//------------------------------------------------------------------ PRIVE
+
+//----------------------------------------------------- Méthodes protégées
+bool Lecture::VerifieFichierExclu(string nomPage)
+// Algorithme : Cette méthode compare la fin du nom de la page avec les extensions
+// qui doivent être filtrées. Au préalable elle passe nomPage en minuscule pour
+// éviter d'avoir des problèmes liés à la casse
+//
+{
+  // on convertit nomPage en minuscule
   transform(nomPage.begin(), nomPage.end(), nomPage.begin(),::tolower);
 
   if(nomPage.length()>3 && nomPage.substr(nomPage.length()-3,3)==".js")
@@ -205,41 +168,4 @@ bool Lecture::VerifieFichierExclu(string nomPage)
     return true;
   }
   return false;
-} //----- Fin de VerifieFichierExclu()
-
-//------------------------------------------------- Surcharge d'opérateurs
-
-//-------------------------------------------- Constructeurs - destructeur
-Lecture::Lecture ( const Lecture & unLecture )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <Lecture>" << endl;
-#endif
-} //----- Fin de Lecture (constructeur de copie)
-
-
-Lecture::Lecture (string nomFichier):fichierLog(nomFichier)
-// Algorithme :
-//
-{
-  #ifdef MAP
-      cout << "Appel au constructeur de <Lecture>" << endl;
-  #endif
-} //----- Fin de Lecture
-
-
-Lecture::~Lecture ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au destructeur de <Lecture>" << endl;
-#endif
-} //----- Fin de ~Lecture
-
-
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées
+} //----- Fin de VerifieFichierExclu

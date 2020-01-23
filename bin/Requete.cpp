@@ -2,7 +2,7 @@
                            Requete  -  Classe stockant les informations liées à une requête lue dans les logs
                              -------------------
     début                : 14/01/2020
-    copyright            : (C) 2020 par OECHSLIN, BRANCHEREAU
+    copyright            : (C) 2020 par BRANCHEREAU, OECHSLIN
 *************************************************************************/
 
 //---------- Réalisation de la classe <Requete> (fichier Requete.cpp) ------------
@@ -13,108 +13,62 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-using namespace std;
 
+using namespace std;
 //------------------------------------------------------ Include personnel
 #include "Requete.h"
-
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-// type Requete::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
-string Requete::GetDate()
-// Algorithme :
-//
-{
-	return date;
-} //----- Fin de GetDate
-
-string Requete::GetAction()
-// Algorithme :
-//
-{
-	return action;
-} //----- Fin de GetAction
-
 string Requete::GetPageCible()
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 	return pageCible;
 } //----- Fin de GetPageCible
 
 string Requete::GetPageSource()
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 	return pageSource;
 } //----- Fin de GetPageSource
 
 int Requete::ExtraireHeure()
-// Algorithme :
+// Algorithme : Aucun
 //
 {
-	//extraction de l'heure en string
+	//extraction de l'heure en string :
 	istringstream streamDate(date);
 	string temp;
 	getline(streamDate,temp,':');
 	getline(streamDate,temp,':');
 
 	//transformation en int :
-	stringstream convert(temp);
+	stringstream convertStream(temp);
 	int res;
-	convert>>res;
+	convertStream>>res;
 	return res;
 } //----- Fin de ExtraireHeure
 
 void Requete::EnleverBaseUrlSource(string baseUrl)
+// Algorithme : Aucun
+//
 {
   if(pageSource.find(baseUrl) != string::npos)
   {
     // si on trouve la base, on l'enlève
     pageSource=pageSource.substr(pageSource.find(baseUrl)+baseUrl.length());
   }
-}
+} //----- Fin de EnleverBaseUrlSource
 
 //------------------------------------------------- Surcharge d'opérateurs
-Requete & Requete::operator = ( const Requete & uneRequete )
-// Algorithme :
-//
-{
-	ip = uneRequete.ip;
-	userLogName = uneRequete.userLogName;
-	authenticatedUser = uneRequete.authenticatedUser;
-	date = uneRequete.date;
-	action = uneRequete.action;
-	pageCible = uneRequete.pageCible;
-	protocole = uneRequete.protocole;
-	codeRetour = uneRequete.codeRetour;
-	quantiteDonnees = uneRequete.quantiteDonnees;
-	pageSource = uneRequete.pageSource;
-	navigateur = uneRequete.navigateur;
-} //----- Fin de operator =
-
 
 //-------------------------------------------- Constructeurs - destructeur
-Requete::Requete ( const Requete & uneRequete )
-// Algorithme :
-//
-: ip(uneRequete.ip), userLogName(uneRequete.userLogName), authenticatedUser(uneRequete.authenticatedUser), date(uneRequete.date), action(uneRequete.action), pageCible(uneRequete.pageCible), protocole(uneRequete.protocole), codeRetour(uneRequete.codeRetour), quantiteDonnees(uneRequete.quantiteDonnees), pageSource(uneRequete.pageSource), navigateur(uneRequete.navigateur)
-{
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <Requete>" << endl;
-#endif
-} //----- Fin de Requete (constructeur de copie)
-
 Requete::Requete ( )
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 #ifdef MAP
@@ -122,19 +76,8 @@ Requete::Requete ( )
 #endif
 } //----- Fin de Requete (constructeur par défaut)
 
-Requete::Requete (string ipr, string logname, string user, string d, string actionR, string cible, string prtcl, int codeR, int qDonne, string source,string nav)
-// Algorithme
-//
-: ip(ipr), userLogName(logname), authenticatedUser(user), date(d), action(actionR), pageCible(cible), protocole(prtcl), codeRetour(codeR), quantiteDonnees(qDonne), pageSource(source), navigateur(nav)
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <Requete>" << endl;
-#endif
-} //----- Fin de Requete
-
-
 Requete::~Requete ( )
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 #ifdef MAP

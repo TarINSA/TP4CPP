@@ -1,0 +1,29 @@
+.TH analog 1 "Janvier 2020" "1.0" "Manuel analog"
+.SH NAME
+analog - analyse un fichier de log apache
+.SH SYNOPSIS
+analog [OPTIONS]... FICHIER
+.SH DESCRIPTION
+    Affiche des statistiques sur les pages mentionnées dans le fichier de log, en particulier les liens entre les documents.
+.SH OPTIONS
+    Par défaut, la commande affiche le top 10 des pages les plus populaires.
+
+.B -e
+.RS
+    Exclut de l'analyse tous les documents de type image, css, et javascript
+.RE
+.B -t HEURE
+.RS
+    Analyse uniquement les pages qui ont été visitées dans le créneau horaire [HEURE;HEURE+1[
+.RE
+.B -g FICHIER_GRAPHE
+.RS
+    Construit le graphe (au format GraphViz) représentant les liens entre les pages et le nombre de parcours associés
+.RE
+
+    Le fichier log FICHIER (obligatoire) doit être au format .log et les droits en lecture doivent être positionnés.
+    Le fichier du graphe FICHIER_GRAPHE doit être spécifié au format .dot et les droits en écriture doivent être positionnés si le fichier existe déjà.
+    L'argument HEURE doit être un entier compris entre 0 et 23 (inclus).
+.SH AUTHOR
+Réalisé par Killian OECHSLIN et Corentin BRANCHEREAU
+

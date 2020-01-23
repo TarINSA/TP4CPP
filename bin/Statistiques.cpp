@@ -1,9 +1,8 @@
 /*************************************************************************
-                           Statistiques  -  description
+                           Statistiques  -  Classe gérant les statistiques d'un fichier log
                              -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
+    début                : 14/01/2020
+    copyright            : (C) 2020 par BRANCHEREAU, OECHSLIN
 *************************************************************************/
 
 //---------- Réalisation de la classe <Statistiques> (fichier Statistiques.cpp) ------------
@@ -18,30 +17,15 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Statistiques.h"
-
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-// type Statistiques::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
-void Statistiques::AjouterPage( string nomPage)
-// Algorithme :
-//
-{
-	infoPage infos;
-	//infos.pagesPointees.insert(std::make_pair(pageCible,1));
-	infos.nbHit=0;
-  EnsemblePages.insert(make_pair(nomPage,infos));
-} //----- Fin de AjouterPageSource
-
 void Statistiques::AjouterLien ( string pageSource, string pageCible)
-// Algorithme :
+// Algorithme : Avant d'ajouter le lien entre les 2 pages, la méthode vérifie
+// qu'elles existent bien dans l'ensemble de pages. Dans le cas contraire, elle
+// les rajoute.
 //
 {
 	if(EnsemblePages.find(pageSource) == EnsemblePages.end())
@@ -63,21 +47,26 @@ void Statistiques::AjouterLien ( string pageSource, string pageCible)
 	}
 	else
 	{
-		//on incrémente le nb de lien vers pageCible
+		//on incrémente le nombre de lien vers pageCible
 		++EnsemblePages[pageSource].pagesPointees[pageCible];
 	}
 
-	// on incrémente le nb de hit de pageCible;
+	// on incrémente le nombre de hit de pageCible;
 	++EnsemblePages[pageCible].nbHit;
 
 } //----- Fin de AjouterPagePointee
 
 bool Statistiques::ConstruireGraphe(string nomGraphe)
-// Algorithme :
+// Algorithme : Cette méthode parcourt l'ensemble des pages et construit d'abord
+// les "node" dans le fichier .dot. Ensuite elle crée les liens entre les "node"
+// en parcourant pour chaque page de l'ensemble les pages qu'elle pointe.
+//
+// Dans la méthode on utilise une map (nodePage) afin de relier le nom du page et
+// son numéro de "node" dans le fichier graphe.
 //
 {
 	ofstream fichierGraphe;
-	fichierGraphe.open(nomGraphe,ios::trunc);
+	fichierGraphe.open(nomGraphe,ios::trunc); // on ouvre fichierGraphe en mode ios::trunc pour réécrire à chaque fois par dessus
 	if(!fichierGraphe.is_open())
 	{
 		fichierGraphe.close();
@@ -89,6 +78,7 @@ bool Statistiques::ConstruireGraphe(string nomGraphe)
 	map<string,infoPage>::iterator it;
 	int nbNode=0;
 	map<string,string> nodePage; // permet d'associer les noms des pages avec les noms des nodes
+
 	// création de tous les nodes
 	for(it=EnsemblePages.begin();it!=EnsemblePages.end();++it)
 	{
@@ -97,7 +87,7 @@ bool Statistiques::ConstruireGraphe(string nomGraphe)
 			continue;
 		}
 		string nameNode = "node"+to_string(nbNode);
-		fichierGraphe<<nameNode<<" [label=\""<<it->first<<"\"];"<<endl;
+		fichierGraphe<<nameNode<<" [label=\""<<it->first<<"\"];"<<endl; // on crée le node dans le fichier graphe en respectant la syntaxe de ce fichier
 		++nbNode;
 		nodePage.insert(make_pair(it->first,nameNode));
 	}
@@ -112,18 +102,24 @@ bool Statistiques::ConstruireGraphe(string nomGraphe)
 		map<string,int>::iterator itLien;
 		for(itLien=it->second.pagesPointees.begin();itLien!=it->second.pagesPointees.end();++itLien)
 		{
+			// on crée les liens dans le fichier graphe en respectant la syntaxe de ce fichier
 			fichierGraphe<<nodePage[it->first]<<" -> "<<nodePage[itLien->first]<<" [label=\""<<itLien->second<<"\"];"<<endl;
 		}
 	}
 
 	fichierGraphe<<"}";
 	fichierGraphe.close();
+	// message indiquant que tout c'est bien passé
 	cout<<"Dot-file "<<nomGraphe<<" generated"<<endl;
 	return true;
 } //----- Fin de ConstruireGraphe
 
+
 void Statistiques::AfficherTopDix()
-// Algorithme :
+// Algorithme : Cette méthode recherche à chaque itération le max des nombres de
+// hits de chaque page, puis après avoir trouvé le max on affiche la page correspondante
+// (avec son nombre de hits) et on stocke le nom de cette page dans un set afin de
+// ne pas prendre en compte dans la recherche plusieurs fois la même page.
 //
 {
 	map<string,infoPage>::iterator iter;
@@ -131,9 +127,9 @@ void Statistiques::AfficherTopDix()
 	int i;
 	int maxHit;
 	string pageMaxTemp;
-	for(i=0;i<min(10,(int)EnsemblePages.size());++i)
+	for(i=0;i<min(10,(int)EnsemblePages.size());++i) // la condition d'arrêt change si il y a moins de 10 pages à afficher
 	{
-		maxHit=-1;
+		maxHit=-1; // -1 signifie qu'on est au début de la boucle
 		// recherche du nbHit max
 		for(iter=EnsemblePages.begin();iter!=EnsemblePages.end();++iter)
 		{
@@ -143,7 +139,7 @@ void Statistiques::AfficherTopDix()
 				maxHit=iter->second.nbHit;
 			}
 		}
-		if(maxHit>0)
+		if(maxHit>0) // on affiche la page uniquement si le nombre de hit est non nul
 		{
 			cout<<pageMaxTemp<<" ("<<maxHit<<" hits)"<<endl;
 		}
@@ -154,20 +150,9 @@ void Statistiques::AfficherTopDix()
 
 //------------------------------------------------- Surcharge d'opérateurs
 
-
 //-------------------------------------------- Constructeurs - destructeur
-Statistiques::Statistiques ( const Statistiques & unStatistiques )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <Statistiques>" << endl;
-#endif
-} //----- Fin de Statistiques (constructeur de copie)
-
-
 Statistiques::Statistiques ( )
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 #ifdef MAP
@@ -177,7 +162,7 @@ Statistiques::Statistiques ( )
 
 
 Statistiques::~Statistiques ( )
-// Algorithme :
+// Algorithme : Aucun
 //
 {
 #ifdef MAP
@@ -189,3 +174,11 @@ Statistiques::~Statistiques ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+void Statistiques::AjouterPage(string nomPage)
+// Algorithme : Aucun
+//
+{
+	infoPage infos;
+	infos.nbHit=0;
+  EnsemblePages.insert(make_pair(nomPage,infos));
+} //----- Fin de AjouterPage

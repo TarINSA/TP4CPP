@@ -1,9 +1,8 @@
 /*************************************************************************
                    Main  -  Classe principale de gestion de l'application
                              -------------------
-    début                : 19 NOVEMBRE 2019
-    copyright            : (C) 2019 par BRANCHEREAU, OECHSLIN
-    e-mail               : $EMAIL$
+    début                : 14/01/2020
+    copyright            : (C) 2020 par BRANCHEREAU, OECHSLIN
 *************************************************************************/
 
 //---------- Réalisation de la classe <Main> (fichier Main.cpp) ------------
@@ -12,50 +11,36 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
-#include <cstring>
 #include <string>
-#include <cstdlib>
+#include <cstring>
 #include <fstream>
 
 using namespace std;
 
 //------------------------------------------------------ Include personnel
-#include "PageInfo.h"
 #include "Lecture.h"
 #include "Statistiques.h"
 #include "Requete.h"
-
 //----------------------------------------------------------------- PUBLIC
 bool filtre_e=false;
 bool filtre_g=false;
 bool filtre_t=false;
-bool syntax_error=false;
-bool file_error=false;
-bool fichier=false;
-bool time_error=false;
 int temps;
 string nomFichier;
 string nomGraphe;
 string baseUrl;
 // -----------------------------------------------Déclaration de Fonctions
-void choixOption(int argc,char ** argv);
-bool TestExistanceFichier(string nom);
+int ChoixOption(int argc,char ** argv);
 inline void ErreurSyntaxe();
 inline void ErreurFichier();
 inline void ErreurTemps();
-inline void ErreurImage();
-
-
-
+inline void ErreurGraphe();
 //---------------------------------------------------- Fonctions publiques
-
 int main(int argc, char **argv)
 {
-
-  choixOption(argc,argv);
-  if(!file_error && !syntax_error && !time_error)
+  if(ChoixOption(argc,argv)==0)
   {
-      // lecture du fichier config pour obtenir la base de l'url (adresse local)
+      // lecture du fichier config pour obtenir la base de l'url (adresse local) :
       // on récupère d'abord le chemin d'accès du fichier config
       string cheminConfig=string(argv[0]);
       cheminConfig.erase(cheminConfig.find("analog"));
@@ -73,76 +58,82 @@ int main(int argc, char **argv)
         fichierConfig.close();
       }
 
+      // création des objets nécessaires pour la lecture et l'analyse des logs
       Requete requeteTemporaire;
       Statistiques statLog;
       Lecture fichierLecture(nomFichier);
+
+      //on lance la lecture tant qu'il y a des logs a lire dans le fichier
       while(fichierLecture.LireLigneLog(requeteTemporaire))
       {
-        requeteTemporaire.EnleverBaseUrlSource(baseUrl);
+        requeteTemporaire.EnleverBaseUrlSource(baseUrl); //on enleve la base de l'url lorsque elle est locale
         if(fichierLecture.PassageFiltre(requeteTemporaire,filtre_e,filtre_t,temps))
         {
+          // si la requête a passé les filtres on l'ajoute aux statistiques
           statLog.AjouterLien(requeteTemporaire.GetPageSource(),requeteTemporaire.GetPageCible());
         }
       }
 
-      bool GraphConstruit=true;
       if(filtre_g)
       {
-         GraphConstruit=statLog.ConstruireGraphe(nomGraphe);
-      }
-      if(GraphConstruit)
-      {
-        statLog.AfficherTopDix();
+         if(statLog.ConstruireGraphe(nomGraphe))
+         {
+           statLog.AfficherTopDix();
+         }
+         else
+         {
+           ErreurGraphe();
+           return -1;
+         }
       }
       else
       {
-        ErreurImage();
+        statLog.AfficherTopDix();
       }
   }
-
-
-  /*
-  // TEST
-  Statistiques stat;
-  stat.AjouterLien("source","cible");
-  stat.AjouterLien("cible","source");
-  stat.ConstruireGraphe("graphe.dot");
-  */
-
+  else // il y a eu une erreur
+  {
+    return -1;
+  }
   return 0;
-
 }
 
 
-void choixOption(int argc,char ** argv)
-// Algorithme :
+int ChoixOption(int argc,char ** argv)
+// Algorithme : La méthode lit un à un les paramètres passés par l'utilisateur au
+// lancement et en déduit les filtres à activer.
+//
+// Elle s'occupe également de vérifier qu'il n'y a pas d'erreur de syntaxe,
+// d'ouverture de fichier, ou une erreur dans les arguments des options
 //
 {
   int i=1;
-  while (i < argc && syntax_error==false && file_error==false && time_error==false)
+  while (i < argc)
   {
-    if( i==argc-1 ) // dernier argument passé lors de l'appel
+    if(i==argc-1) // dernier argument passé lors de l'appel
     {
+      // on vérifie que l'extension est .log
       if (strlen(argv[i])>=5 && argv[i][strlen(argv[i])-4]=='.' && argv[i][strlen(argv[i])-3]=='l' && argv[i][strlen(argv[i])-2]=='o' && argv[i][strlen(argv[i])-1]=='g')
       {
-        if(TestExistanceFichier((string)argv[i]))
+        // on vérifie que le fichier existe et peut être ouvert
+        if(Lecture::TestOuvertureFichier((string)argv[i]))
         {
-          fichier=true;
           nomFichier=(string)argv[i];
         }
         else
         {
           ErreurFichier();
-          return;
+          return -1;
         }
       }
       else
       {
         ErreurSyntaxe();
-        return;
+        return -1;
       }
     }
 
+    // vérification de l'option -g
     else if( !filtre_g && strcmp( argv[i],"-g" )==0 )
     {
       if (i!=argc-2 && strlen(argv[i+1])>=5 && argv[i+1][strlen(argv[i+1])-4]=='.' && argv[i+1][strlen(argv[i+1])-3]=='d' && argv[i+1][strlen(argv[i+1])-2]=='o' && argv[i+1][strlen(argv[i+1])-1]=='t')
@@ -154,15 +145,17 @@ void choixOption(int argc,char ** argv)
       else
       {
         ErreurSyntaxe();
-        return;
+        return -1;
       }
     }
 
+    // vérification de l'option -e
     else if( !filtre_e && strcmp( argv[i],"-e" )==0 )
     {
       filtre_e=true;
     }
 
+    // vérification de l'option -t
     else if( !filtre_t && strcmp( argv[i],"-t" )==0 )
     {
       if( i!=argc-2)
@@ -185,68 +178,54 @@ void choixOption(int argc,char ** argv)
           else
           {
             ErreurTemps();
-            return;
+            return -1;
           }
         }
         else
         {
           ErreurSyntaxe();
-          return;
+          return -1;
         }
       }
       else
       {
         ErreurSyntaxe();
-        return;
+        return -1;
       }
     }
     else
     {
       ErreurSyntaxe();
-      return;
+      return -1;
     }
     i++;
   }
-  if(argc==1)
+
+  if(argc==1) // aucun paramètre n'a été passé
+  {
     ErreurSyntaxe();
-} // Fin de choixOption
-
-bool TestExistanceFichier(string nomFichier)
-// Algorithme :
-//
-{
-  fstream fichier(nomFichier,ios::in);
-  if(fichier.fail())
-  {
-    fichier.close();
-    return false;
+    return -1;
   }
-  else
-  {
-    fichier.close();
-    return true;
-  }
-} //----- Fin de TestExistanceFichier
+  return 0;
+} //----- Fin de ChoixOption
 
+
+// ces fonctions nous permettent de pouvoir changer facilement les messages d'erreur si il y a besoin
 inline void ErreurSyntaxe()
 {
-  cerr << "Erreur de syntaxe :"<<endl<<"\tanalog [options] nomfichier.log"<<endl;
-  cerr<<"Options possibles :"<<endl<<"\t[-g nomfichier.dot]"<<endl<<"\t[-e]"<<endl<<"\t[-t heure]"<<endl;
-  syntax_error=true;
+  cerr<<"Erreur de syntaxe : veuillez vous référez au manuel en tapant \"man ./analogman\""<<endl;
 }
 
 inline void ErreurFichier()
 {
   cerr << "Erreur: Problème sur l'ouverture du fichier .log. Vérifiez que celui-ci existe, et que vous disposez des droits nécessaires"<<endl;
-  file_error=true;
 }
 
 inline void ErreurTemps()
 {
   cerr<<"Erreur : L'heure doit être comprise entre 0 et 23"<<endl;
-  time_error=true;
 }
-inline void ErreurImage()
+inline void ErreurGraphe()
 {
   cerr<<"Erreur lors de l'ouverture du fichier .dot. Vérifiez que vous disposez des droits nécessaires."<<endl;
 }
